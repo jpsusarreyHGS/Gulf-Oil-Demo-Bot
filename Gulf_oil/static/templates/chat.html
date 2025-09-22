@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gulf Oil Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gulf-orange: #FF4500;
+            --gulf-blue: #005BAA;
+            --gulf-navy: #003366;
+            --gulf-light-blue: #4A90E2;
+            --gulf-white: #FFFFFF;
+            --gulf-cream: #FFF8F0;
+            --gulf-gray-50: #F8FAFC;
+            --gulf-gray-100: #F1F5F9;
+            --gulf-gray-200: #E2E8F0;
+            --gulf-gray-300: #CBD5E1;
+            --gulf-gray-400: #94A3B8;
+            --gulf-gray-500: #64748B;
+            --gulf-gray-600: #475569;
+            --gulf-gray-700: #334155;
+            --gulf-gray-800: #1E293B;
+            --gulf-gray-900: #0F172A;
+            
+            --gradient-primary: linear-gradient(135deg, #FF4500 0%, #FF6B35 25%, #005BAA 75%, #003366 100%);
+            --gradient-secondary: linear-gradient(135deg, #005BAA 0%, #4A90E2 100%);
+            --gradient-accent: linear-gradient(135deg, #FF4500 0%, #FF6B35 100%);
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 50%, #E8F3F8 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--gradient-primary);
+            color: var(--gulf-white);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            z-index: 10;
+            min-height: 80px;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.03) 2px,
+                rgba(255, 255, 255, 0.03) 4px
+            );
+            animation: slidePattern 20s linear infinite;
+        }
+        
+        @keyframes slidePattern {
+            0% { transform: translate(-50px, -50px); }
+            100% { transform: translate(0px, 0px); }
+        }
+        
+        .logo-container {
+            position: relative;
+            z-index: 2;
+            margin-right: 1.5rem;
+        }
+        
+        .gulf-logo {
+
+            background: var(--gulf-white);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .gulf-logo:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .gulf-logo-svg {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--gulf-white);
+        }
+        
+        .subtitle {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Main Chat Container */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--gulf-white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Chat Messages Area */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            max-width: 768px;
+            margin: 0 auto;
+            width: 100%;
+            gap: 1.5rem;
+        }
+        
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--gulf-gray-300);
+            border-radius: 3px;
+        }
+        
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: var(--gulf-gray-400);
+        }
+        
+        /* Welcome Message */
+        .welcome-message {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gulf-gray-600);
+        }
+        
+        .welcome-icon {
+            font-size: 4rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gulf-gray-800);
+            margin-bottom: 0.75rem;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+        
+        .feature-pills {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .feature-pill {
+            background: var(--gulf-white);
+            color: var(--gulf-gray-700);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid var(--gulf-gray-200);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .feature-pill:hover {
+            background: var(--gulf-orange);
+            color: var(--gulf-white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--gulf-orange);
+        }
+        
+        /* Messages */
+        .message-wrapper {
+            width: 100%;
+            display: flex;
+            padding: 0 2rem;
+        }
+        
+        .message-wrapper.user {
+            justify-content: flex-end;
+        }
+        
+        .message-wrapper.assistant {
+            justify-content: flex-start;
+        }
+        
+        .message {
+            max-width: 70%;
+            padding: 1rem 1.5rem;
+            border-radius: 18px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            position: relative;
+            animation: messageSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes messageSlideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px) scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+        
+        .user-message {
+            background: var(--gradient-secondary);
+            color: var(--gulf-white);
+            border-bottom-right-radius: 6px;
+        }
+        
+        .assistant-message {
+            background: var(--gulf-gray-100);
+            color: var(--gulf-gray-800);
+            border-bottom-left-radius: 6px;
+            border: 1px solid var(--gulf-gray-200);
+        }
+        
+        .message-image {
+            max-width: 100%;
+            border-radius: 12px;
+            margin-top: 0.5rem;
+        }
+        
+        /* Markdown Styling */
+        .markdown-content {
+            line-height: 1.6;
+        }
+        
+        .markdown-content h1,
+        .markdown-content h2,
+        .markdown-content h3,
+        .markdown-content h4 {
+            margin: 1.2em 0 0.6em 0;
+            font-weight: 600;
+            color: var(--gulf-navy);
+        }
+        
+        .markdown-content h1 {
+            font-size: 1.4em;
+            border-bottom: 1px solid var(--gulf-gray-300);
+            padding-bottom: 0.3em;
+        }
+        
+        .markdown-content h2 {
+            font-size: 1.3em;
+        }
+        
+        .markdown-content h3 {
+            font-size: 1.2em;
+        }
+        
+        .markdown-content h4 {
+            font-size: 1.1em;
+        }
+        
+        .markdown-content p {
+            margin-bottom: 1em;
+        }
+        
+        .markdown-content ul,
+        .markdown-content ol {
+            margin: 0.5em 0 1em 1.5em;
+        }
+        
+        .markdown-content li {
+            margin-bottom: 0.4em;
+        }
+        
+        .markdown-content blockquote {
+            border-left: 4px solid var(--gulf-orange);
+            padding-left: 1em;
+            margin: 1.5em 0;
+            color: var(--gulf-gray-600);
+            font-style: italic;
+        }
+        
+        .markdown-content code {
+            background-color: var(--gulf-gray-200);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        
+        .markdown-content pre {
+            background-color: var(--gulf-gray-200);
+            padding: 1em;
+            border-radius: 8px;
+            overflow: auto;
+            margin: 1em 0;
+        }
+        
+        .markdown-content pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1em 0;
+        }
+        
+        .markdown-content th,
+        .markdown-content td {
+            border: 1px solid var(--gulf-gray-300);
+            padding: 0.5em 0.75em;
+            text-align: left;
+        }
+        
+        .markdown-content th {
+            background-color: var(--gulf-gray-100);
+            font-weight: 600;
+        }
+        
+        .markdown-content tr:nth-child(even) {
+            background-color: var(--gulf-gray-50);
+        }
+        
+        .markdown-content a {
+            color: var(--gulf-light-blue);
+            text-decoration: underline;
+        }
+        
+        .markdown-content strong {
+            font-weight: 600;
+            color: var(--gulf-navy);
+        }
+        
+        .markdown-content em {
+            font-style: italic;
+        }
+        
+        .markdown-content hr {
+            border: none;
+            height: 1px;
+            background-color: var(--gulf-gray-300);
+            margin: 1.5em 0;
+        }
+        
+        /* Typing Indicator */
+        .typing-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            padding: 0 2rem;
+            display: none;
+        }
+        
+        .typing-indicator {
+            background: var(--gulf-gray-100);
+            color: var(--gulf-gray-600);
+            padding: 1rem 1.5rem;
+            border-radius: 18px;
+            border-bottom-left-radius: 6px;
+            border: 1px solid var(--gulf-gray-200);
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+        
+        .typing-dots span {
+            height: 8px;
+            width: 8px;
+            background: var(--gulf-gray-400);
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typingBounce {
+            0%, 80%, 100% {
+                transform: scale(0.8) translateY(0);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1.2) translateY(-4px);
+                opacity: 1;
+            }
+        }
+        
+        /* Input Area */
+        .input-container {
+            border-top: 1px solid var(--gulf-gray-200);
+            background: var(--gulf-white);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            bottom: 0;
+            z-index: 5;
+        }
+        
+        .input-wrapper {
+            max-width: 768px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .file-preview {
+            display: none;
+            background: var(--gulf-gray-50);
+            border: 1px solid var(--gulf-gray-200);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .file-preview img {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .file-preview-info {
+            flex: 1;
+        }
+        
+        .file-preview-name {
+            font-weight: 500;
+            color: var(--gulf-gray-800);
+            font-size: 0.9rem;
+        }
+        
+        .file-preview-size {
+            font-size: 0.8rem;
+            color: var(--gulf-gray-500);
+        }
+        
+        .file-preview button {
+            background: none;
+            border: none;
+            color: var(--gulf-gray-400);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .file-preview button:hover {
+            background: var(--gulf-gray-200);
+            color: var(--gulf-orange);
+        }
+        
+        .input-area {
+            display: flex;
+            align-items: flex-end;
+            gap: 0.75rem;
+            background: var(--gulf-white);
+            border: 1.5px solid var(--gulf-gray-200);
+            border-radius: 24px;
+            padding: 0.75rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .input-area:focus-within {
+            border-color: var(--gulf-light-blue);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+        
+        .text-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            font-family: inherit;
+            background: transparent;
+            color: var(--gulf-gray-800);
+            padding: 0.75rem 1rem;
+            resize: none;
+            max-height: 120px;
+            min-height: 24px;
+            line-height: 1.5;
+        }
+        
+        .text-input::placeholder {
+            color: var(--gulf-gray-400);
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .file-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gulf-gray-100);
+            color: var(--gulf-gray-500);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        
+        .file-label:hover {
+            background: var(--gulf-orange);
+            color: var(--gulf-white);
+        }
+        
+        .send-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-accent);
+            color: var(--gulf-white);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .send-button:disabled {
+            background: var(--gulf-gray-300);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem 1.5rem;
+            }
+            
+            .title {
+                font-size: 1.25rem;
+            }
+            
+            .subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .gulf-logo {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .gulf-logo-svg {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .chat-messages {
+                padding: 1rem 0;
+                gap: 1rem;
+            }
+            
+            .message-wrapper {
+                padding: 0 1rem;
+            }
+            
+            .message {
+                max-width: 85%;
+                padding: 0.875rem 1.25rem;
+            }
+            
+            .input-container {
+                padding: 1rem;
+            }
+            
+            .welcome-message {
+                padding: 2rem 1rem;
+            }
+            
+            .welcome-icon {
+                font-size: 3rem;
+            }
+            
+            .welcome-title {
+                font-size: 1.75rem;
+            }
+            
+            .feature-pills {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .markdown-content h1 {
+                font-size: 1.3em;
+            }
+            
+            .markdown-content h2 {
+                font-size: 1.2em;
+            }
+            
+            .markdown-content h3 {
+                font-size: 1.1em;
+            }
+            
+            .markdown-content table {
+                font-size: 0.9em;
+            }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <div class="gulf-logo">
+                <!-- Official Gulf Oil Logo Image -->
+                <img src="/static/templates/Logo.png" 
+                    alt="Gulf Oil Logo" 
+                    class="gulf-logo-img" />
+            </div>
+        </div>
+
+        <div class="header-content">
+            <h1 class="title">Gulf Oil Assistant</h1>
+            <p class="subtitle">Your intelligent petroleum industry companion powered by AI</p>
+        </div>
+    </div>
+    
+    <div class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+            <div class="welcome-message">
+                <div class="welcome-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h2 class="welcome-title">Welcome to Gulf Oil Assistant</h2>
+                <p class="welcome-subtitle">I'm your AI-powered assistant, ready to help with all your Gulf Oil inquiries, product information, and industry insights.</p>
+                <div class="feature-pills">
+                    <div class="feature-pill">Product Information</div>
+                    <div class="feature-pill">Technical Support</div>
+                    <div class="feature-pill">Industry Insights</div>
+                    <div class="feature-pill">Station Locator</div>
+                    <div class="feature-pill">Fuel Recommendations</div>
+                    <div class="feature-pill">Safety Guidelines</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="typing-wrapper" id="typing-wrapper">
+            <div class="typing-indicator">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="input-container">
+            <div class="input-wrapper">
+                <div class="file-preview" id="file-preview">
+                    <img id="preview-image" src="" alt="Preview">
+                    <div class="file-preview-info">
+                        <div class="file-preview-name" id="file-name"></div>
+                        <div class="file-preview-size" id="file-size"></div>
+                    </div>
+                    <button id="remove-file"><i class="fas fa-times"></i></button>
+                </div>
+                
+                <div class="input-area">
+                    <input type="file" accept="image/*" id="file-input" class="file-input">
+                    <label for="file-input" class="file-label">
+                        <i class="fas fa-paperclip"></i>
+                    </label>
+                    <textarea class="text-input" id="text-input" placeholder="Ask me anything about Gulf Oil products, services, or industry insights..." rows="1"></textarea>
+                    <button class="send-button" id="send-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple markdown parser for rendering assistant responses
+        function parseMarkdown(markdown) {
+            if (!markdown) return '';
+            
+            // Replace markdown with HTML
+            let html = markdown;
+            
+            // Headers
+            html = html.replace(/^###### (.*$)/gim, '<h6>$1</h6>');
+            html = html.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
+            html = html.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
+            html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+            html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+            html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+            
+            // Bold and italic
+            html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+            html = html.replace(/\*(.*?)\*/gim, '<em>$1</em>');
+            html = html.replace(/_(.*?)_/gim, '<em>$1</em>');
+            
+            // Links
+            html = html.replace(/\[([^\[]+)\]\(([^)]+)\)/gim, '<a href="$2" target="_blank">$1</a>');
+            
+            // Blockquotes
+            html = html.replace(/^>\s(.*$)/gim, '<blockquote>$1</blockquote>');
+            
+            // Horizontal rule
+            html = html.replace(/^\-\-\-\-\-$/gim, '<hr>');
+            
+            // Unordered lists
+            html = html.replace(/^\s*[\*\-]\s(.*$)/gim, '<li>$1</li>');
+            html = html.replace(/(<li>.*<\/li>)/gims, '<ul>$1</ul>');
+            
+            // Ordered lists
+            html = html.replace(/^\s*\d\.\s(.*$)/gim, '<li>$1</li>');
+            html = html.replace(/(<li>.*<\/li>)/gims, '<ol>$1</ol>');
+            
+            // Paragraphs
+            html = html.replace(/^\s*(\n)?(.+)/gim, function(m){
+                return /\<(\/)?(h\d|ul|ol|li|blockquote|hr)/i.test(m) ? m : '<p>'+m+'</p>';
+            });
+            
+            // Line breaks
+            html = html.replace(/\n$/gim, '<br>');
+            
+            // Code blocks
+            html = html.replace(/```([^`]+)```/gim, '<pre>$1</pre>');
+            html = html.replace(/`([^`]+)`/gim, '<code>$1</code>');
+            
+            // Tables (basic support)
+            html = html.replace(/^\|(.+)\|$/gim, function(match, row) {
+                const cells = row.split('|').map(cell => `<td>${cell.trim()}</td>`).join('');
+                return `<tr>${cells}</tr>`;
+            });
+            html = html.replace(/(<tr>.*<\/tr>)/gims, function(match, rows) {
+                if (match.includes('<th>') || match.includes('</th>')) {
+                    return `<table>${rows}</table>`;
+                }
+                
+                // Check if first row should be header
+                const firstRow = rows.split('</tr>')[0];
+                if (firstRow) {
+                    const hasHeaderFormat = firstRow.includes('<td>**') || firstRow.includes('**</td>');
+                    if (hasHeaderFormat) {
+                        let headerRow = firstRow
+                            .replace(/\*\*(.*?)\*\*/g, '<th>$1</th>')
+                            .replace(/<td>/g, '<th>')
+                            .replace(/<\/td>/g, '</th>');
+                        rows = rows.replace(firstRow, headerRow);
+                    }
+                }
+                
+                return `<table>${rows}</table>`;
+            });
+            
+            return `<div class="markdown-content">${html}</div>`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.getElementById('chat-messages');
+            const textInput = document.getElementById('text-input');
+            const fileInput = document.getElementById('file-input');
+            const sendButton = document.getElementById('send-button');
+            const filePreview = document.getElementById('file-preview');
+            const previewImage = document.getElementById('preview-image');
+            const fileName = document.getElementById('file-name');
+            const fileSize = document.getElementById('file-size');
+            const removeFile = document.getElementById('remove-file');
+            const typingWrapper = document.getElementById('typing-wrapper');
+            
+            let selectedFile = null;
+            let isFirstMessage = true;
+            
+            // Auto-resize textarea
+            textInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+            
+            // Function to add a message to the chat
+            function addMessage(content, isUser, isImage = false) {
+                // Remove welcome message on first user message
+                if (isFirstMessage && isUser) {
+                    const welcomeMessage = chatMessages.querySelector('.welcome-message');
+                    if (welcomeMessage) {
+                        welcomeMessage.style.animation = 'fadeOut 0.3s ease-out forwards';
+                        setTimeout(() => {
+                            welcomeMessage.remove();
+                        }, 300);
+                    }
+                    isFirstMessage = false;
+                }
+                
+                const messageWrapper = document.createElement('div');
+                messageWrapper.className = `message-wrapper ${isUser ? 'user' : 'assistant'}`;
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user-message' : 'assistant-message'}`;
+                
+                if (isImage) {
+                    const img = document.createElement('img');
+                    img.src = content;
+                    img.className = 'message-image';
+                    messageDiv.appendChild(img);
+                } else {
+                    if (isUser) {
+                        messageDiv.textContent = content;
+                    } else {
+                        // Parse markdown for assistant messages
+                        messageDiv.innerHTML = parseMarkdown(content);
+                    }
+                }
+                
+                messageWrapper.appendChild(messageDiv);
+                chatMessages.appendChild(messageWrapper);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Function to show typing indicator
+            function showTypingIndicator() {
+                typingWrapper.style.display = 'flex';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Function to hide typing indicator
+            function hideTypingIndicator() {
+                typingWrapper.style.display = 'none';
+            }
+            
+            // Function to format file size
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            // Function to send message to backend
+            async function sendMessage() {
+                const text = textInput.value.trim();
+                const file = selectedFile;
+                
+                if (!text && !file) return;
+                
+                // Add user message to chat
+                if (text) {
+                    addMessage(text, true);
+                }
+                
+                if (file) {
+                    addMessage('', true, true);
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const lastUserMessage = chatMessages.querySelector('.message-wrapper:last-child .message');
+                        const img = lastUserMessage.querySelector('img');
+                        if (img) {
+                            img.src = e.target.result;
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+                
+                // Clear input and hide file preview
+                textInput.value = '';
+                textInput.style.height = 'auto';
+                clearFilePreview();
+                
+                // Show typing indicator
+                showTypingIndicator();
+                
+                // Prepare form data
+                const formData = new FormData();
+                if (text) {
+                    formData.append('text', text);
+                }
+                if (file) {
+                    formData.append('image', file);
+                }
+                
+                try {
+                    // Send request to backend
+                    const response = await fetch('/chat', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Server returned ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // Hide typing indicator and add assistant's response
+                    hideTypingIndicator();
+                    addMessage(data.response, false);
+                } catch (error) {
+                    // Hide typing indicator and show error
+                    hideTypingIndicator();
+                    addMessage('I apologize, but I\'m experiencing technical difficulties at the moment. Please try again shortly, and I\'ll be happy to assist you with your Gulf Oil inquiries.', false);
+                    console.error('Error:', error);
+                }
+            }
+            
+            // Function to handle file selection
+            function handleFileSelect(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file.');
+                    return;
+                }
+                
+                selectedFile = file;
+                
+                // Show file preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    fileName.textContent = file.name;
+                    fileSize.textContent = formatFileSize(file.size);
+                    filePreview.style.display = 'flex';
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            // Function to clear file preview
+            function clearFilePreview() {
+                selectedFile = null;
+                fileInput.value = '';
+                filePreview.style.display = 'none';
+                previewImage.src = '';
+                fileName.textContent = '';
+                fileSize.textContent = '';
+            }
+            
+            // Event listeners
+            sendButton.addEventListener('click', sendMessage);
+            
+            textInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            removeFile.addEventListener('click', clearFilePreview);
+            
+            // Focus on input when page loads
+            textInput.focus();
+            
+            // Add interaction to feature pills
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('feature-pill')) {
+                    const pill = e.target;
+                    const text = pill.textContent;
+                    textInput.value = `Tell me about ${text.toLowerCase()}`;
+                    textInput.focus();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
